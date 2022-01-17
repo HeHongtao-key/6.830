@@ -68,7 +68,8 @@ public class RecordId implements Serializable {
     @Override
     public int hashCode() {
         // some code goes here
-        return pid.hashCode() + tupleno;
+        String s = pid.hashCode() + "#" + tupleno;
+        return s.hashCode();
     }
 
 }
