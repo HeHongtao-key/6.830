@@ -286,11 +286,14 @@ public class HeapPage implements Page {
      */
     public int getNumEmptySlots() {
         // some code goes here
+        //也可以用isSlotUsed（i)来判断
         int count = 0;
         for(int i = 0; i < numSlots; i++){
-
+            if(tuples[i] == null){
+                count++;
+            }
         }
-        return 0;
+        return count;
     }
 
     /**
@@ -322,7 +325,13 @@ public class HeapPage implements Page {
      */
     public Iterator<Tuple> iterator() {
         // some code goes here
-        return null;
+        List<Tuple> tupleList = new ArrayList<>();
+        for(int i = 0; i < numSlots; i++){
+            if(this.tuples[i] != null){
+                tupleList.add(tuples[i]);
+            }
+        }
+        return tupleList.iterator();
     }
 
     public static void main(String[] argv){
