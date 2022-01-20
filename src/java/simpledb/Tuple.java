@@ -93,7 +93,7 @@ public class Tuple implements Serializable {
         for(int i = 0; i < tupleDesc.numFields() - 1; i++){
             sb.append(fields[i].toString()).append("\t");
         }
-        sb.append(fields[tupleDesc.numFields() - 1].toString());
+        sb.append(fields[tupleDesc.numFields() - 1]);
         return sb.toString();
     }
 
@@ -113,5 +113,6 @@ public class Tuple implements Serializable {
     public void resetTupleDesc(TupleDesc td)
     {
         // some code goes here
+        this.tupleDesc = td;
     }
 }
