@@ -9,6 +9,8 @@ public class Filter extends Operator {
 
     private static final long serialVersionUID = 1L;
 
+    private final Predicate predicate;
+    private OpIterator operator;
     /**
      * Constructor accepts a predicate to apply and a child operator to read
      * tuples to filter from.
@@ -20,29 +22,36 @@ public class Filter extends Operator {
      */
     public Filter(Predicate p, OpIterator child) {
         // some code goes here
+        predicate = p;
+        operator = child;
     }
 
     public Predicate getPredicate() {
         // some code goes here
-        return null;
+        return predicate;
     }
 
     public TupleDesc getTupleDesc() {
         // some code goes here
-        return null;
+        return operator.getTupleDesc();
     }
 
     public void open() throws DbException, NoSuchElementException,
             TransactionAbortedException {
         // some code goes here
+        operator.open();
+        super.open();
     }
 
     public void close() {
         // some code goes here
+        super.close();
+        operator.close();
     }
 
     public void rewind() throws DbException, TransactionAbortedException {
         // some code goes here
+        operator.rewind();
     }
 
     /**
@@ -57,18 +66,25 @@ public class Filter extends Operator {
     protected Tuple fetchNext() throws NoSuchElementException,
             TransactionAbortedException, DbException {
         // some code goes here
+        while(operator.hasNext()){
+            Tuple t = operator.next();
+            if(predicate.filter(t)){
+                return t;
+            }
+        }
         return null;
     }
 
     @Override
     public OpIterator[] getChildren() {
         // some code goes here
-        return null;
+        return new OpIterator[]{this.operator};
     }
 
     @Override
     public void setChildren(OpIterator[] children) {
         // some code goes here
+        this.operator = children[0];
     }
 
 }
